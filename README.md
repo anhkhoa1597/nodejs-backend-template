@@ -95,18 +95,27 @@ Server will start on: `http://localhost:5000`
 ## 🧱 Sample Model (`User.js`)
 
 ```js
-const mongoose = require("mongoose");
+import { Schema, model } from "mongoose";
 
-const userSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  createdAt: {
-    type: Date,
-    default: Date.now,
+const userSchema = new Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-});
+  { timestamps: true }
+);
 
-module.exports = mongoose.model("User", userSchema);
+const User = model("User", userSchema);
+
+export default User;
 ```
 
 ---
