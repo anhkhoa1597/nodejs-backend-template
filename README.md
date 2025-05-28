@@ -1,21 +1,35 @@
-# 🛠️ Node.js + Express API Template
+# 🛠️ Node.js + Express Backend Template
 
-A clean and modular RESTful API template built with **Node.js**, **Express**, and **MongoDB**, following the **MVC architecture**. Ideal for small to medium backend projects.
+A modular and secure RESTful API backend built with **Node.js**, **Express**, and **MongoDB**, following **MVC architecture** with clear separation of concerns and production-ready configurations.
 
 ---
 
 ## 📁 Project Structure
 
 ```
-my-backend-template/
-├── controllers/       # Route handlers / logic
-├── models/            # Mongoose schemas
-├── routes/            # API route definitions
-├── middlewares/       # Error handling and custom middleware
-├── config/            # Database and environment configuration
-├── .env               # Environment variables
-├── server.js          # Application entry point
+backend-template/
+├── config/             # DB connection config
+│   └── db.js
+├── controllers/        # Business logic
+│   └── userController.js
+├── logs/               # Winston log files
+│   ├── combined.log
+│   ├── debug.log
+│   └── error.log
+├── middlewares/        # Custom middleware (e.g. error handler)
+│   └── errorHandler.js
+├── models/             # Mongoose schemas
+│   └── user.js
+├── routes/             # API route definitions
+│   └── user.routes.js
+├── utils/              # Logger config (Winston)
+│   └── logger.js
+├── .env                # Environment variables (not committed)
+├── .gitignore          # Ignored files and folders
+├── app.js              # Express app setup
+├── server.js           # App bootstrap and DB connect
 ├── package.json
+├── package-lock.json
 └── README.md
 ```
 
@@ -23,12 +37,13 @@ my-backend-template/
 
 ## 🚀 Features
 
-- ✅ Express + MVC structure
+- ✅ MVC folder structure
 - ✅ MongoDB with Mongoose
 - ✅ CORS, Helmet, Morgan, Dotenv
+- ✅ Winston-based logging
 - ✅ Centralized error handling
-- ✅ Ready for JWT or Auth integration
-- ✅ Nodemon for auto-reload during development
+- ✅ Ready for JWT or authentication integration
+- ✅ Auto-reload with Nodemon in development
 
 ---
 
@@ -43,8 +58,8 @@ my-backend-template/
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/your-username/my-backend-template.git
-cd my-backend-template
+git clone https://github.com/your-username/backend-template.git
+cd backend-template
 npm install
 ```
 
@@ -57,9 +72,9 @@ Create a `.env` file in the root with the following:
 ```env
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/myapp
+FRONTEND_URL=http://localhost:3000
+NODE_ENV=development
 ```
-
-You can also use services like [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) for cloud database.
 
 ---
 
@@ -75,7 +90,7 @@ or
 node server.js
 ```
 
-Server will start on: `http://localhost:5000`
+Server runs at: `http://localhost:5000`
 
 ---
 
@@ -83,7 +98,7 @@ Server will start on: `http://localhost:5000`
 
 ### Base URL:
 
-`/api/users`
+`/users`
 
 | Method | Endpoint | Description       |
 | ------ | -------- | ----------------- |
@@ -92,40 +107,22 @@ Server will start on: `http://localhost:5000`
 
 ---
 
-## 🧱 Sample Model (`User.js`)
+## 🐞 Error Handling
 
-```js
-import { Schema, model } from "mongoose";
+All unhandled errors are captured by:
+`middlewares/errorHandler.js`
 
-const userSchema = new Schema(
-  {
-    username: {
-      type: String,
-      required: true,
-      trim: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-  },
-  { timestamps: true }
-);
-
-const User = model("User", userSchema);
-
-export default User;
-```
+Customize to suit your needs (log format, status codes, etc.)
 
 ---
 
-## 🐞 Error Handling
+## 📝 Logging
 
-All unhandled errors are caught by a global middleware:  
-`middlewares/errorHandler.js`
+Logs are written using `winston` to:
 
-You can customize it to return different formats or HTTP codes.
+- `logs/combined.log`
+- `logs/error.log`
+- `logs/debug.log`
 
 ---
 
@@ -133,9 +130,13 @@ You can customize it to return different formats or HTTP codes.
 
 To deploy:
 
-1. Set correct `MONGO_URI` and `PORT`
-2. Use services like **Render**, **Railway**, **Vercel (for frontend)**, or **IBM Code Engine**
-3. Set `NODE_ENV=production` and use `npm start`
+1. Set `MONGO_URI`, `PORT`, `FRONTEND_URL`
+2. Use services like **Render**, **Railway**, or **IBM Code Engine**
+3. Set `NODE_ENV=production` and run:
+
+```bash
+npm start
+```
 
 ---
 
@@ -147,4 +148,4 @@ This project is licensed under the MIT License.
 
 ## 🙌 Credits
 
-Template by Khoa Dang Anh. Inspired by real-world project structures.
+Template by Khoa Dang Anh. Inspired by clean backend architectures.
