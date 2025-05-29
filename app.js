@@ -1,21 +1,19 @@
 import express from "express";
-import dotenv from "dotenv";
 import userRoutes from "./routes/user.routes.js";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import { errorHandler, NotFoundError } from "./middlewares/errorHandler.js";
-import { logger } from "./utils/logger.js";
+import logger from "./utils/logger.js";
+import config from "./config/config.js";
 
-// Load environment variables
-dotenv.config();
 const app = express();
-
+const { nodeEnv, frontendUrl } = config;
 // region 🛡️ Middleware
 // Enable CORS
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    origin: frontendUrl || "http://localhost:3000",
     credentials: true,
   })
 );
@@ -27,7 +25,7 @@ app.use(
 app.use(express.json()); // Middleware to parse JSON requests
 app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded data
 // Middleware for logging HTTP requests
-if (process.env.NODE_ENV === "development") {
+if (nodeEnv === "development") {
   app.use(morgan("dev")); // Use 'dev' format for development
 } else {
   app.use(
@@ -36,11 +34,6 @@ if (process.env.NODE_ENV === "development") {
     })
   ); // Use 'combined' format for production
 }
-// endregion
-
-// region 🗂️ Database connection
-import { connectDB } from "./config/db.js";
-connectDB(); // Connect to MongoDB database
 // endregion
 
 // region 📂 Routes
@@ -60,3 +53,5 @@ app.use((req, res, next) => {
 
 // Centralized error handler
 app.use(errorHandler);
+
+export default app;

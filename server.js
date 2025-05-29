@@ -1,13 +1,15 @@
 import app from "./app.js";
 import { connectDB } from "./config/db.js";
+import logger from "./utils/logger.js";
+import config from "./config/config.js";
 
-const PORT = process.env.PORT || 5000;
+const { port } = config;
 
 const startServer = async () => {
   try {
     await connectDB();
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+    app.listen(port, () => {
+      console.log(`Server running on port ${port}`);
     });
   } catch (error) {
     logger.error("Failed to start server", { stack: error.stack });

@@ -26,7 +26,7 @@ let customFormatwithColor = combine(
 );
 
 // Create a logger instance
-export const logger = winston.createLogger({
+const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || "info",
   format: customFormat,
   transports: [
@@ -38,3 +38,4 @@ export const logger = winston.createLogger({
     new winston.transports.File({ filename: "logs/debug.log", level: "debug" }),
   ],
 });
+export default logger;

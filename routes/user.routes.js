@@ -2,10 +2,13 @@ import express from "express";
 import {
   getAllUsers,
   getUserById,
-  createUser,
-  updateUser,
+  register,
   deleteUser,
+  updatePassword,
+  loginUser,
+  logoutUser,
 } from "../controllers/userController.js";
+import { authenticateToken } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
@@ -15,11 +18,17 @@ router.get("/", getAllUsers);
 // GET /users/:id - Get user by ID
 router.get("/:id", getUserById);
 
-// POST /users - Create a new user
-router.post("/", createUser);
+// POST /users/register - Create a new user
+router.post("/register", register);
 
-// PUT /users/:id - Update user by ID
-router.put("/:id", updateUser);
+// POST /users/login - Logging in user
+router.post("/login", loginUser);
+
+// POST /users/logout - Logging out user
+router.post("/logout", logoutUser);
+
+// PUT /users/update-password - Update user password
+router.put("/update-password", authenticateToken, updatePassword);
 
 // DELETE /users/:id - Delete user by ID
 router.delete("/:id", deleteUser);

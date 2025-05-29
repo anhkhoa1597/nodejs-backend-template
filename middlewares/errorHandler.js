@@ -1,4 +1,4 @@
-import { logger } from "../utils/logger.js";
+import logger from "../utils/logger.js";
 
 // Base custom error class
 export class CustomError extends Error {
@@ -10,26 +10,62 @@ export class CustomError extends Error {
   }
 }
 
-// Authentication error
-export class AuthenticationError extends CustomError {
-  constructor(message = "Authentication required") {
+// Generate Token error
+export class GenerateTokenError extends CustomError {
+  constructor(message = "Failed to generate token") {
     super(
       message,
-      "AuthenticationError",
-      401,
-      "No valid authentication credentials provided."
+      "GenerateTokenError",
+      500,
+      "An error occurred while generating the authentication token."
     );
   }
 }
 
-// Authorization error
-export class AuthorizationError extends CustomError {
-  constructor(message = "Forbidden") {
+// Unauthorized error
+export class UnauthorizedError extends CustomError {
+  constructor(message = "Unauthorized access") {
     super(
       message,
-      "AuthorizationError",
-      403,
+      "UnauthorizedError",
+      401,
       "You do not have permission to access this resource."
+    );
+  }
+}
+
+// Authentication error
+export class AuthenticationError extends CustomError {
+  constructor(message = "Authentication failed") {
+    super(
+      message,
+      "AuthenticationError",
+      403,
+      "You must be authenticated to access this resource."
+    );
+  }
+}
+
+// InvalidToken error
+export class InvalidTokenError extends CustomError {
+  constructor(message = "Invalid or expired token") {
+    super(
+      message,
+      "InvalidTokenError",
+      403,
+      "The provided token is invalid or has expired."
+    );
+  }
+}
+
+// PasswordMismatch error
+export class PasswordMismatchError extends CustomError {
+  constructor(message = "Password mismatch") {
+    super(
+      message,
+      "PasswordMismatchError",
+      403,
+      "The provided password does not match."
     );
   }
 }
