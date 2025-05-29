@@ -64,8 +64,8 @@ backend-template/
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/your-username/backend-template.git
-cd backend-template
+git clone https://github.com/anhkhoa1597/nodejs-backend-template.git
+cd nodejs-backend-template
 npm install
 ```
 
@@ -106,15 +106,15 @@ Server runs at: `http://localhost:5000`
 
 ### Base URL: `/users`
 
-| Method | Endpoint            | Description                     | Auth Required |
-|--------|---------------------|----------------------------------|---------------|
-| GET    | `/`                 | Get all users                    | No            |
-| GET    | `/:id`              | Get user by ID                   | No            |
-| POST   | `/register`         | Register a new user              | No            |
-| POST   | `/login`            | Login with username/password     | No            |
-| POST   | `/logout`           | Log out a user (optional logic)  | No            |
-| PUT    | `/update-password`  | Update user password             | ✅ Yes         |
-| DELETE | `/:id`              | Delete a user by ID              | Depends       |
+| Method | Endpoint           | Description                     | Auth Required |
+| ------ | ------------------ | ------------------------------- | ------------- |
+| GET    | `/`                | Get all users                   | No            |
+| GET    | `/:id`             | Get user by ID                  | No            |
+| POST   | `/register`        | Register a new user             | No            |
+| POST   | `/login`           | Login with username/password    | No            |
+| POST   | `/logout`          | Log out a user (optional logic) | No            |
+| PUT    | `/update-password` | Update user password            | ✅ Yes        |
+| DELETE | `/:id`             | Delete a user by ID             | Depends       |
 
 ---
 
@@ -124,6 +124,7 @@ All errors are handled by a centralized middleware in:
 `middlewares/errorHandler.js`
 
 It supports:
+
 - Custom errors (`ValidationError`, `UnauthorizedError`, etc.)
 - Token-related errors
 - Auto logging of stack traces
