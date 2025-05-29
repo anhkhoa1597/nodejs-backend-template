@@ -8,7 +8,8 @@ A modular and secure RESTful API backend built with **Node.js**, **Express**, an
 
 ```
 backend-template/
-├── config/             # DB connection config
+├── config/             # DB connection & global config
+│   ├── config.js
 │   └── db.js
 ├── controllers/        # Business logic
 │   └── userController.js
@@ -16,18 +17,21 @@ backend-template/
 │   ├── combined.log
 │   ├── debug.log
 │   └── error.log
-├── middlewares/        # Custom middleware (e.g. error handler)
+├── middlewares/        # Custom middleware (e.g. auth, error handler)
+│   ├── authMiddleware.js
 │   └── errorHandler.js
 ├── models/             # Mongoose schemas
 │   └── user.js
 ├── routes/             # API route definitions
 │   └── user.routes.js
-├── utils/              # Logger config (Winston)
-│   └── logger.js
-├── .env                # Environment variables (not committed)
-├── .gitignore          # Ignored files and folders
+├── utils/              # Utility helpers
+│   ├── logger.js
+│   ├── passwordUtils.js
+│   └── tokenUtils.js
+├── .env
+├── .gitignore
 ├── app.js              # Express app setup
-├── server.js           # App bootstrap and DB connect
+├── server.js           # Entry point and app bootstrap
 ├── package.json
 ├── package-lock.json
 └── README.md
@@ -39,18 +43,20 @@ backend-template/
 
 - ✅ MVC folder structure
 - ✅ MongoDB with Mongoose
-- ✅ CORS, Helmet, Morgan, Dotenv
-- ✅ Winston-based logging
-- ✅ Centralized error handling
-- ✅ Ready for JWT or authentication integration
-- ✅ Auto-reload with Nodemon in development
+- ✅ JWT authentication & token verification
+- ✅ Secure headers with Helmet
+- ✅ CORS support
+- ✅ Logging with Winston & Morgan
+- ✅ Custom error handling with centralized middleware
+- ✅ Auto reload with Nodemon in development
+- ✅ Modular utils for password & token handling
 
 ---
 
 ## 🧩 Requirements
 
 - Node.js >= 14
-- MongoDB (local or cloud e.g. MongoDB Atlas)
+- MongoDB (local or Atlas)
 - npm or yarn
 
 ---
@@ -74,6 +80,8 @@ PORT=5000
 MONGO_URI=mongodb://localhost:27017/myapp
 FRONTEND_URL=http://localhost:3000
 NODE_ENV=development
+JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRES_IN=1h
 ```
 
 ---
@@ -96,23 +104,29 @@ Server runs at: `http://localhost:5000`
 
 ## 📡 API Endpoints
 
-### Base URL:
+### Base URL: `/users`
 
-`/users`
-
-| Method | Endpoint | Description       |
-| ------ | -------- | ----------------- |
-| GET    | `/`      | Get all users     |
-| POST   | `/`      | Create a new user |
+| Method | Endpoint            | Description                     | Auth Required |
+|--------|---------------------|----------------------------------|---------------|
+| GET    | `/`                 | Get all users                    | No            |
+| GET    | `/:id`              | Get user by ID                   | No            |
+| POST   | `/register`         | Register a new user              | No            |
+| POST   | `/login`            | Login with username/password     | No            |
+| POST   | `/logout`           | Log out a user (optional logic)  | No            |
+| PUT    | `/update-password`  | Update user password             | ✅ Yes         |
+| DELETE | `/:id`              | Delete a user by ID              | Depends       |
 
 ---
 
 ## 🐞 Error Handling
 
-All unhandled errors are captured by:
+All errors are handled by a centralized middleware in:
 `middlewares/errorHandler.js`
 
-Customize to suit your needs (log format, status codes, etc.)
+It supports:
+- Custom errors (`ValidationError`, `UnauthorizedError`, etc.)
+- Token-related errors
+- Auto logging of stack traces
 
 ---
 
@@ -124,18 +138,20 @@ Logs are written using `winston` to:
 - `logs/error.log`
 - `logs/debug.log`
 
+Morgan is used for HTTP request logging, integrated into Winston in production.
+
 ---
 
 ## 📤 Deployment
 
 To deploy:
 
-1. Set `MONGO_URI`, `PORT`, `FRONTEND_URL`
-2. Use services like **Render**, **Railway**, or **IBM Code Engine**
-3. Set `NODE_ENV=production` and run:
+1. Set environment variables in `.env`
+2. Use a platform like **Render**, **Railway**, or **Code Engine**
+3. Run in production mode:
 
 ```bash
-npm start
+NODE_ENV=production npm start
 ```
 
 ---
@@ -148,4 +164,5 @@ This project is licensed under the MIT License.
 
 ## 🙌 Credits
 
-Template by Khoa Dang Anh. Inspired by clean backend architectures.
+Template by Khoa Dang Anh.  
+Built with care for real-world scalable backend development.
