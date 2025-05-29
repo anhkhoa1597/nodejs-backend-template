@@ -157,6 +157,38 @@ NODE_ENV=production npm start
 
 ---
 
+## 🛠 Starting a New Project From Template
+
+If you're cloning this template to start a new project, follow these steps:
+
+### 1. Clone the template
+
+```bash
+git clone https://github.com/anhkhoa1597/nodejs-backend-template.git my-new-project
+cd my-new-project
+```
+
+### 2. Rename your project
+
+- Change the folder name (`my-new-project`)
+- Edit the `"name"` field in `package.json`
+- Update the `README.md` title if needed
+
+### 3. Remove existing Git history
+
+```bash
+rm -rf .git
+git init
+git remote add origin https://github.com/your-username/my-new-project.git
+git add .
+git commit -m "🎉 Initial commit from backend template"
+git push -u origin main
+```
+
+Now you have a fresh, customized backend ready to go 🚀
+
+---
+
 ## 📚 License
 
 This project is licensed under the MIT License.
